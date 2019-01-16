@@ -12,7 +12,8 @@
         <p>
             Data fra Alma via
             <a href="https://ub-lsm.uio.no/">LSM</a>.
-            Ansvarlig for verktøyet: <a href="mailto:d.m.heggo@ub.uio.no">Dan Michael</a>.
+            Ansvarlig: <a href="mailto:d.m.heggo@ub.uio.no">Dan Michael</a>.
+            Kildekode: <a href="https://github.com/scriptotek/check-holdings">GitHub</a>.
         </p>
     </v-footer>
   </v-app>
