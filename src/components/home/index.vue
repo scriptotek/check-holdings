@@ -1,13 +1,13 @@
 <template>
     <div>
-    <p lang="nb">
-        Alma instans: 47BIBSYS_UBO
-    </p>
-    <p lang="nb">
-        Legg inn en liste med ISBN-numre og sjekk beholdningen vår for dem.
-        Husk at selv om vi ikke har et bestemt ISBN-nummer ikke gir treff kan det være
-        vi har en variant av boka med et annet ISBN-nummer.
-    </p>
+        <p lang="nb">
+            Legg inn en liste med ISBN-numre (én per linje) og sjekk raskt beholdningen vår.
+            Selv om et bestemt ISBN-nummer ikke gir treff kan det fortsatt være
+            vi har en annen variasjon eller utgave av boka.
+        </p>
+        <p lang="nb">
+            Alma-instans: 47BIBSYS_UBO
+        </p>
         <form @submit.prevent="submit">
 
             <v-textarea
@@ -23,7 +23,7 @@
                 depressed
                 :disabled="inputText.length < 10"
               >Check</v-btn>
-      </form>
+        </form>
     </div>
 </template>
 
