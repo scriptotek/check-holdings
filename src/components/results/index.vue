@@ -1,7 +1,5 @@
 <template>
     <div>
-        Instance: select
-
           <v-data-table
             :disable-initial-sort="true"
             :headers="headers"

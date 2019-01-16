@@ -1,17 +1,28 @@
 <template>
     <div>
+    <p lang="nb">
+        Alma instans: 47BIBSYS_UBO
+    </p>
+    <p lang="nb">
+        Legg inn en liste med ISBN-numre og sjekk beholdningen vår for dem.
+        Husk at selv om vi ikke har et bestemt ISBN-nummer ikke gir treff kan det være
+        vi har en variant av boka med et annet ISBN-nummer.
+    </p>
         <form @submit.prevent="submit">
+
             <v-textarea
                 label="ISBN numbers to check:"
                 hint="One ISBN number per line. With or without hyphens."
                 v-model="inputText"
               ></v-textarea>
-          <v-btn
-            @click="submit"
-            class="white--text"
-            color="deep-purple accent-4"
-            depressed
-          >Submit</v-btn>
+
+            <v-btn
+                @click="submit"
+                class="white--text"
+                color="primary"
+                depressed
+                :disabled="inputText.length < 10"
+              >Check</v-btn>
       </form>
     </div>
 </template>

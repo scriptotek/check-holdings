@@ -38,7 +38,7 @@ export default class Bibs {
           name: bib.title(),
           link: `https://bibsys-almaprimo.hosted.exlibrisgroup.com/primo-explore/search?query=any,contains,${bib.data.isbns[0]}&tab=default_tab&search_scope=default_scope&vid=UIO&lang=no_NO&offset=0`,
           children: bib.data.holdings
-            .filter(h => h.institution == '47BIBSYS_UBO' && h.library == '1030310')
+            .filter(h => h.institution == '47BIBSYS_UBO')
             .map(holding => ({
               id: holding.holding_id,
               name: `${holding.location} ${holding.callcode} (${holding.total_items} eks.)`,
