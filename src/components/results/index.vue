@@ -28,7 +28,7 @@
                         :open-on-click="true"
                         item-key="id">
                             <template slot="label" slot-scope="{ item }">
-                                {{ item.name}}   <a href="">YO</a>
+                                {{ item.name }}  <a v-if="item.link" :href="item.link" target="_blank">Oria</a>
                             </template>
                         </v-treeview>
                 </div>

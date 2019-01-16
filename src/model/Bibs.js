@@ -36,6 +36,7 @@ export default class Bibs {
         return this.data.map(bib => ({
           id: bib.data.id,
           name: bib.title(),
+          link: `https://bibsys-almaprimo.hosted.exlibrisgroup.com/primo-explore/search?query=any,contains,${bib.data.isbns[0]}&tab=default_tab&search_scope=default_scope&vid=UIO&lang=no_NO&offset=0`,
           children: bib.data.holdings
             .filter(h => h.institution == '47BIBSYS_UBO' && h.library == '1030310')
             .map(holding => ({
