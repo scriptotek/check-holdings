@@ -41,7 +41,7 @@ export default class Bibs {
             .filter(h => h.institution == '47BIBSYS_UBO')
             .map(holding => ({
               id: holding.holding_id,
-              name: `${holding.location} ${holding.callcode} (${holding.total_items} eks.)`,
+              name: `${holding.library_name} ${holding.location} ${holding.callcode} (${holding.total_items} eks.)`,
               children: holding.items.map(item => ({
                 id: item.pid,
                 name: `${item.barcode}: ${item.process_type.desc || 'On shelf'}`,

@@ -36,7 +36,7 @@ export default class Bib {
     holdings() {
         // console.log(this.data.holdings)
         let holdings = this.data.holdings
-            .filter(h => h.institution == '47BIBSYS_UBO' && h.library == '1030310')
+            .filter(h => h.institution == '47BIBSYS_UBO')
             .map(h => `${h.location} ${h.callcode} (${h.total_items - h.unavailable_items} av ${h.total_items} eks. på hylla)`);
 
         if (holdings.length) {
