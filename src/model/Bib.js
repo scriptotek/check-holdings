@@ -32,16 +32,4 @@ export default class Bib {
         let x = this.data.edition ? `${this.data.edition} ${this.data.pub_year}` : this.data.pub_year;
         return `${title} (${x})`
     }
-
-    holdings() {
-        // console.log(this.data.holdings)
-        let holdings = this.data.holdings
-            .filter(h => h.institution == '47BIBSYS_UBO')
-            .map(h => `${h.location} ${h.callcode} (${h.total_items - h.unavailable_items} av ${h.total_items} eks. på hylla)`);
-
-        if (holdings.length) {
-            return holdings.join('<br>')
-        }
-        return 'Not found'
-    }
 }

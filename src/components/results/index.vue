@@ -1,92 +1,88 @@
 <template>
     <div>
-          <v-data-table
-            :disable-initial-sort="true"
-            :headers="headers"
-            :items="documents"
-            :loading="loading"
-            :pagination="{'rowsPerPage': -1}"
-            class="elevation-1"
-          >
-
-            <template slot="items" slot-scope="props">
-              <td style="width: 120px">{{ props.item.isbn }}</td>
-              <td>
-                <div v-if="props.item.loading">
-                    Waiting...
-                </div>
-                <div v-else>
-                    <div v-if="!props.item.results.data.length">
-                        <em>ISBN not found, please check manually</em>
+        <div style="height:8px;">
+            <v-progress-linear :indeterminate="true" v-show="loading" class="ma-0"></v-progress-linear>
+        </div>
+        <div v-if="!loading && !searches.length">
+            No searches, click the header to go back.
+        </div>
+        <v-container fluid :key="search.query" v-for="search in searches" class="pa-0 pt-1" style="border-top: 1px solid #eee;">
+            <v-layout row wrap>
+                <v-flex xs2>
+                    {{ search.query }}
+                </v-flex>
+                <v-flex>
+                    <div v-if="search.loading">
+                        Waiting...
                     </div>
-                    <v-treeview
-                        v-else
-                        :items="props.item.results.treedata()"
-                        :open="props.item.results.open_nodes()"
-                        :open-on-click="true"
-                        item-key="id">
-                            <template slot="label" slot-scope="{ item }">
-                                {{ item.name }}  <a v-if="item.link" :href="item.link" target="_blank">Oria</a>
-                            </template>
-                        </v-treeview>
-                </div>
-              </td>
-            </template>
-          </v-data-table>
+                    <div v-if="search.error">
+                        An error occured!
+                    </div>
+                    <div v-if="!search.loading && !search.error">
+                        <div v-if="!search.results.data.length">
+                            <em>Not found, please check manually</em>
+                        </div>
+                        <v-treeview
+                            v-else
+                            :items="search.results.treedata()"
+                            :open="search.results.open_nodes()"
+                            :open-on-click="true"
+                            item-key="id">
+                                <template slot="label" slot-scope="{ item }">
+                                    <v-icon small v-if="item.available === false">report</v-icon>
+                                    {{ item.name }}
+                                    <span v-if="item.summary" class="summary">({{item.summary}})</span>
 
+                                    <a v-if="item.link" :href="item.link" target="_blank" class="markdown--link markdown--external">Oria<i class="v-icon markdown--link mdi mdi-open-in-new"></i></a>
+
+                                    <a v-if="item.ebooklink" :href="item.ebooklink" target="_blank" class="markdown--link markdown--external">Fulltext<i class="v-icon markdown--link mdi mdi-open-in-new"></i></a>
+
+                                </template>
+                        </v-treeview>
+                    </div>
+                </v-flex>
+            </v-layout>
+        </v-container>
     </div>
 </template>
-<style>
-.v-treeview-node__root {
-    height: auto;
-}
-.v-treeview-node__label {
-    font-size: 13px;
-}
+<style lang="sass">
+.summary
+    color: #008
+.v-treeview-node__root
+    height: auto
+.v-treeview-node__label
+    font-size: 13px
+    flex-shrink: 1
+
+.markdown--link
+    margin-left: 4px
+    font-size: 14px
+
+i + .v-treeview-node__content:hover
+    background: #ffe
+
+.v-treeview-node__content
+    flex-shrink: 1
+
+*
+    -webkit-user-select: auto !important  /* Chrome 49+ */
+    -moz-user-select: auto !important     /* Firefox 43+ */
+    -ms-user-select: auto !important      /* No support yet */
+    user-select: auto !important          /* Likely future */
+
 </style>
 <script>
 import { mapState } from 'vuex';
-import { get } from 'lodash/object';
-import { flattenDeep, uniq, uniqBy } from 'lodash/array';
 
 export default {
     name: 'results',
-    data: () => {
-        return {
-            loading: true,
-            headers: [
-                { text: 'ISBN', value: 'isbn', sortable: false },
-                { text: 'Matches', value: 'matches', sortable: false },
-                // { text: 'Holdings', value: 'holding' },
-            ]
-        }
-    },
+    props: [
+        'searches',
+    ],
     computed: {
         ...mapState({
-            queryString: state => get(state, 'route.query'),
-            documents: state => get(state, 'documents'),
+            loading: state => state.loading,
         }),
     },
-    watch: {
-        queryString: function(value, oldValue) {
-            this.checkQueryString();
-        },
-        documents: function(value, oldValue) {
-            // console.log('Docs updated', value);
-        },
-    },
-    mounted() {
-        this.checkQueryString();
-    },
-    methods: {
-        checkQueryString: function() {
-            if (this.queryString && this.queryString.isbns) {
-                this.$store.dispatch('REQUEST_DOCUMENTS', this.queryString.isbns.split(',')).then(x => {
-                    console.log('>>> ALL DONE!')
-                    this.loading = false
-                })
-            }
-        }
-    }
 }
 </script>

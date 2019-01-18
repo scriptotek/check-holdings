@@ -9,30 +9,63 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
-    documents: [],
+    loading: false,
+    searches: [],
   },
   actions: {
-    REQUEST_DOCUMENTS: function ({ commit, state }, isbns) {
-      commit('SET_ISBN_LIST', { list: isbns })
+    REQUEST_SEARCHES: function ({ commit, state }, {field, values}) {
+      commit('BEGIN_SEARCH', { list: values })
 
-      return Promise.all(isbns.map(isbn => {
-        return apiCall({url: `/alma/search?expand_items=true&query=alma.all_for_ui%3D%22${isbn}%22`})
+      let op = '%3D';
+      if (field == 'all_for_ui') op = 'all';
+
+      return Promise.all(values.map(query => {
+        return apiCall({url: `/alma/search?expand_items=true&query=alma.${field} ${op} %22${query}%22`})
             .then(res => {
-                commit('SET_DOCUMENT_DATA', { isbn: isbn, data: res.data })
+                if (res.data.results.length) {
+                    return res
+                } else {
+                    // If no results in IZ, try NZ
+                    return apiCall({url: `/alma/search?nz=true&query=alma.${field}${op}%22${query}%22`})
+                }
+            }).then(res => {
+                commit('SET_SEARCH_RESULTS', { query: query, data: res.data })
+            }).catch(err => {
+                commit('MARK_SEARCH_AS_FAILED', { query: query })
             })
-      }));
-    }
-
+      })).then(() => {
+        commit('END_SEARCH')
+      }).catch(() => {
+        commit('END_SEARCH')
+      })
+    },
+    CLEAR_SEARCHES: function({ commit, state }) {
+      commit('BEGIN_SEARCH', { list: [] })
+    },
   },
   mutations: {
-    SET_ISBN_LIST: (state, { list }) => {
-      state.documents = list.map(x => ({ isbn: x, loading: true, results: [] }) )
+    BEGIN_SEARCH: (state, { list }) => {
+      if (!list.length) {
+        state.loading = false
+        state.searches = []
+        return
+      }
+      state.loading = true
+      state.searches = list.map(x => ({ query: x, loading: true, error: null, results: [] }) )
     },
-    SET_DOCUMENT_DATA: (state, { isbn, data }) => {
-      let idx = findIndex(state.documents, x => x.isbn == isbn)
-      state.documents[idx].loading = false
-      state.documents[idx].results = new Bibs(data.results)
+    SET_SEARCH_RESULTS: (state, { query, data }) => {
+      let idx = findIndex(state.searches, x => x.query == query)
+      state.searches[idx].loading = false
+      state.searches[idx].results = new Bibs(data.results)
     },
+    MARK_SEARCH_AS_FAILED: (state, { query }) => {
+      let idx = findIndex(state.searches, x => x.query == query)
+      state.searches[idx].loading = false
+      state.searches[idx].error = 'An error occured'
+    },
+    END_SEARCH: (state) => {
+      state.loading = false
+    }
   },
   getters: {
     // completedProjects: state => {

@@ -1,5 +1,5 @@
 import { get } from 'lodash/object';
-import { find, sortBy } from 'lodash/collection';
+import { find, orderBy } from 'lodash/collection';
 import Bib from '@/model/Bib'
 
 export default class Bibs {
@@ -33,7 +33,8 @@ export default class Bibs {
     }
 
     treedata() {
-        return this.data.map(bib => ({
+        return orderBy(this.data, x => x.data.pub_year, 'desc')
+        .map(bib => ({
           id: bib.data.id,
           name: bib.title(),
           link: `https://bibsys-almaprimo.hosted.exlibrisgroup.com/primo-explore/search?query=any,contains,${bib.data.isbns[0]}&tab=default_tab&search_scope=default_scope&vid=UIO&lang=no_NO&offset=0`,
@@ -41,7 +42,8 @@ export default class Bibs {
             .filter(h => h.institution == '47BIBSYS_UBO')
             .map(holding => ({
               id: holding.holding_id,
-              name: `${holding.library_name} ${holding.location} ${holding.callcode || '(mangler oppstillingssignatur)'} (${holding.total_items} eks.)`,
+              name: `${holding.library_name} ${holding.location} ${holding.callcode || '(mangler oppstillingssignatur)'}`,
+              summary: `${holding.total_items - holding.unavailable_items} av ${holding.total_items} eks. på hylla`,
               children: holding.items.map(item => ({
                 id: item.pid,
                 name: `${item.barcode}: ${item.process_type.desc || 'On shelf'}`,
@@ -52,9 +54,19 @@ export default class Bibs {
                 .map(port => ({
                   id: port.id,
                   name: `E-book from ${port.collection_name}`,
+                  ebooklink: `https://bibsys.alma.exlibrisgroup.com/view/uresolver/47BIBSYS_UBO/openurl?&u.ignore_date_coverage=true&rft.mms_id=${bib.data.id}&rfr_id=info:sid/primo.exlibrisgroup.com&svc_dat=viewit`,
                 }))
             )
-        }))
+        })).map(obj => {
+            if (!obj.children.length) {
+                obj.children = [{
+                    id: `${obj.id}H`,  // Just an unique key
+                    name: 'Not available at UiO',
+                    available: false,
+                }]
+            }
+            return obj
+        })
     }
 
 }
