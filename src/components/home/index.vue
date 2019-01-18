@@ -35,7 +35,7 @@
                 :disabled="inputText.length < 3"
               >Check</v-btn>
 
-             (Alma-instans: 47BIBSYS_UBO)
+             (Alma-instans: {{ ALMA_INST }})
 
         </form>
 
@@ -71,6 +71,7 @@ export default {
                 {text: 'Title', value: 'title'},
                 {text: 'Keyword', value: 'all_for_ui'},
             ],
+            ALMA_INST: process.env.VUE_APP_ALMA_INST,
         }
     },
     computed: {

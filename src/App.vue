@@ -20,7 +20,7 @@
         >
             <p>
                 Data fra Alma via
-                <a href="https://ub-lsm.uio.no/">LSM</a>.
+                <a :href="lsm_url">LSM</a>.
                 Ansvarlig: <a href="mailto:d.m.heggo@ub.uio.no">Dan Michael</a>.
                 Kildekode: <a href="https://github.com/scriptotek/check-holdings">på GitHub</a>.
             </p>
@@ -34,6 +34,11 @@
 export default {
   name: 'App',
   components: {},
+  data: function() {
+    return {
+      lsm_url: process.env.VUE_APP_LSM_BASE_URL,
+    }
+  },
 }
 </script>
 

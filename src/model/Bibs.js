@@ -37,9 +37,9 @@ export default class Bibs {
         .map(bib => ({
           id: bib.data.id,
           name: bib.title(),
-          link: `https://bibsys-almaprimo.hosted.exlibrisgroup.com/primo-explore/search?query=any,contains,${bib.data.isbns[0]}&tab=default_tab&search_scope=default_scope&vid=UIO&lang=no_NO&offset=0`,
+          link: `https://${process.env.VUE_APP_PRIMO_HOST}/primo-explore/search?query=any,contains,${bib.data.isbns[0]}&vid=${process.env.VUE_APP_PRIMO_VIEW}`,
           children: bib.data.holdings
-            .filter(h => h.institution == '47BIBSYS_UBO')
+            .filter(h => h.institution == process.env.VUE_APP_ALMA_INST)
             .map(holding => ({
               id: holding.holding_id,
               name: `${holding.library_name} ${holding.location} ${holding.callcode || '(mangler oppstillingssignatur)'}`,
@@ -54,7 +54,7 @@ export default class Bibs {
                 .map(port => ({
                   id: port.id,
                   name: `E-book from ${port.collection_name}`,
-                  ebooklink: `https://bibsys.alma.exlibrisgroup.com/view/uresolver/47BIBSYS_UBO/openurl?&u.ignore_date_coverage=true&rft.mms_id=${bib.data.id}&rfr_id=info:sid/primo.exlibrisgroup.com&svc_dat=viewit`,
+                  ebooklink: `https://${process.env.VUE_APP_ALMA_HOST}/view/uresolver/${process.env.VUE_APP_ALMA_INST}/openurl?u.ignore_date_coverage=true&rft.mms_id=${bib.data.id}&rfr_id=info:sid/primo.exlibrisgroup.com&svc_dat=viewit`,
                 }))
             )
         })).map(obj => {
