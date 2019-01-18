@@ -30,8 +30,10 @@
                             item-key="id">
                                 <template slot="label" slot-scope="{ item }">
                                     <v-icon small v-if="item.available === false">report</v-icon>
-                                    {{ item.name }}
+                                    {{ item.name }} {{ item.edition || '' }}
                                     <span v-if="item.summary" class="summary">({{item.summary}})</span>
+
+                                    <router-link v-if="item.available === false" target="_blank" :to="{name: 'Home', query: {q:'title:' + encodeURIComponent(item.parent_name) }}">Try title search<i class="v-icon markdown--link mdi mdi-open-in-new"></i></router-link>
 
                                     <a v-if="item.link" :href="item.link" target="_blank" class="markdown--link markdown--external">Oria<i class="v-icon markdown--link mdi mdi-open-in-new"></i></a>
 

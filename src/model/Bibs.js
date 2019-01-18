@@ -37,7 +37,9 @@ export default class Bibs {
         .map(bib => ({
           id: bib.data.id,
           name: bib.title(),
+          edition: bib.edition(),
           link: `https://${process.env.VUE_APP_PRIMO_HOST}/primo-explore/search?query=any,contains,${bib.data.isbns[0]}&vid=${process.env.VUE_APP_PRIMO_VIEW}`,
+
           children: bib.data.holdings
             .filter(h => h.institution == process.env.VUE_APP_ALMA_INST)
             .map(holding => ({
@@ -63,6 +65,7 @@ export default class Bibs {
                     id: `${obj.id}H`,  // Just an unique key
                     name: 'Not available at UiO',
                     available: false,
+                    parent_name: obj.name,
                 }]
             }
             return obj

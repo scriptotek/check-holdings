@@ -28,8 +28,11 @@ export default class Bib {
     }
 
     title() {
-        let title = this.data.title;  //.replace(/[/;,. ]+$/g, '');
+        return this.data.title;  //.replace(/[/;,. ]+$/g, '');
+    }
+
+    edition() {
         let x = this.data.edition ? `${this.data.edition} ${this.data.pub_year}` : this.data.pub_year;
-        return `${title} (${x})`
+        return `(${x})`
     }
 }
