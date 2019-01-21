@@ -54,7 +54,7 @@
 <script>
 import { mapState } from 'vuex';
 import { get } from 'lodash/object';
-import { flattenDeep, uniq, uniqBy } from 'lodash/array';
+import { uniq } from 'lodash/array';
 import results from '../results';
 
 export default {
@@ -97,7 +97,7 @@ export default {
             if (this.queryString && this.queryString.q) {
                 let [field, values] = /([^:]+):(.+)/.exec(this.queryString.q).slice(1)
                 this.field = field
-                values = values.split(',')
+                values = uniq(values.split(','))
                 this.inputText = values.join('\n')
                 this.$store.dispatch('REQUEST_SEARCHES', {field: field, values: values})
             } else {
