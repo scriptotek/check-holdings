@@ -35,7 +35,7 @@
                 :disabled="inputText.length < 3"
               >Check</v-btn>
 
-             (Alma-instans: {{ ALMA_INST }})
+             (Alma instance: {{ ALMA_INST }})
 
         </form>
 

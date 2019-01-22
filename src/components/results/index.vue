@@ -6,12 +6,12 @@
         <div v-if="!loading && !searches.length">
             No searches, click the header to go back.
         </div>
-        <v-container fluid :key="search.query" v-for="search in searches" class="pa-0 pt-1" style="border-top: 1px solid #eee;">
+        <v-container fluid :key="search.query" v-for="search in searches" class="pa-0 pt-1 ch-row">
             <v-layout row wrap>
-                <v-flex xs2>
-                    {{ search.query }}
+                <v-flex sm2>
+                    <strong>{{ search.query }}</strong>
                 </v-flex>
-                <v-flex>
+                <v-flex sm10>
                     <div v-if="search.loading">
                         Waiting...
                     </div>
@@ -53,6 +53,8 @@
     </div>
 </template>
 <style lang="sass">
+.ch-row
+    border-bottom: 0.5px solid #009688
 .summary
     color: #008
 .v-treeview-node__root
