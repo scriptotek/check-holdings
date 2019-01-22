@@ -17,6 +17,7 @@
     "localforage": "^1.7.3",
     "node-sass": "^4.9.3",
     "proxy-middleware": "^0.15.0",
+    "querystring": "^0.2.0",
     "sass-loader": "^7.1.0",
     "vue": "^2.5.17",
     "vue-router": "^3.0.1",

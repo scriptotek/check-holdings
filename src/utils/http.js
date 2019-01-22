@@ -20,7 +20,7 @@ const cache = setupCache({
 
 const http = axios.create({
   baseURL: process.env.VUE_APP_LSM_BASE_URL,
-  timeout: 10000,
+  timeout: 30000,
   //adapter: cache.adapter,
   //timeout: 60000, // milliseconds
   // withCredentials: true,

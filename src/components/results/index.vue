@@ -45,6 +45,11 @@
                 </v-flex>
             </v-layout>
         </v-container>
+
+        <p v-if="searches.length" style="margin-top:2em;">
+            Note: The number of bibliographic records retrieved for <em>each</em> search
+            (one search constituting one line in the table above) is capped at 50.
+        </p>
     </div>
 </template>
 <style lang="sass">

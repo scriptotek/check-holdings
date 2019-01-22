@@ -20,19 +20,33 @@ const store = new Vuex.Store({
       if (field == 'all_for_ui') op = 'all';
 
       return Promise.all(values.map(query => {
-        return apiCall({url: `/alma/search?expand_items=true&query=alma.${field} ${op} %22${query}%22`})
-            .then(res => {
-                if (res.data.results.length) {
-                    return res
-                } else {
-                    // If no results in IZ, try NZ
-                    return apiCall({url: `/alma/search?nz=true&query=alma.${field}${op}%22${query}%22`})
-                }
-            }).then(res => {
-                commit('SET_SEARCH_RESULTS', { query: query, data: res.data })
-            }).catch(err => {
-                commit('MARK_SEARCH_AS_FAILED', { query: query })
+        return apiCall({
+          url: '/alma/search',
+          params: {
+            query: `alma.${field} ${op} %22${query}%22`,
+            limit: 50,
+            expand_items: 'true',
+          }
+        })
+        .then(res => {
+          if (res.data.results.length) {
+            return res
+          } else {
+            // If no results in IZ, try NZ
+            return apiCall({
+              url: '/alma/search',
+              params: {
+                query: `alma.${field} ${op} %22${query}%22`,
+                limit: 50,
+                nz: 'true',
+              }
             })
+          }
+        }).then(res => {
+          commit('SET_SEARCH_RESULTS', { query: query, data: res.data })
+        }).catch(err => {
+          commit('MARK_SEARCH_AS_FAILED', { query: query })
+        })
       })).then(() => {
         commit('END_SEARCH')
       }).catch(() => {
