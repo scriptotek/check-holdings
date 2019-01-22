@@ -33,7 +33,7 @@ export default class Bibs {
     }
 
     treedata() {
-        return orderBy(this.data, x => x.data.pub_year, 'desc')
+        return orderBy(this.data, search => search.data.pub_year, 'desc')
         .map(bib => ({
           id: bib.data.id,
           name: bib.title(),
@@ -58,6 +58,15 @@ export default class Bibs {
                   name: `E-book from ${port.collection_name}`,
                   ebooklink: `https://${process.env.VUE_APP_ALMA_HOST}/view/uresolver/${process.env.VUE_APP_ALMA_INST}/openurl?u.ignore_date_coverage=true&rft.mms_id=${bib.data.id}&rfr_id=info:sid/primo.exlibrisgroup.com&svc_dat=viewit`,
                 }))
+            )
+            .concat(
+                (() => {
+                    return bib.data.fulltext ? [{
+                      id: 'fulltext',
+                      name: `Electronic access:`,
+                      ebooklink: bib.data.fulltext,
+                    }] : [];
+                })()
             )
         })).map(obj => {
             if (!obj.children.length) {

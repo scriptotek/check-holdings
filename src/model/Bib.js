@@ -35,4 +35,8 @@ export default class Bib {
         let x = this.data.edition ? `${this.data.edition} ${this.data.pub_year}` : this.data.pub_year;
         return `(${x})`
     }
+
+    electronic_access() {
+        return get(this.data, 'fulltext');
+    }
 }
