@@ -27,6 +27,10 @@ export default class Bib {
         // this.link = `https://bibsys-almaprimo.hosted.exlibrisgroup.com/primo-explore/fulldisplay?docid=${this.id}&context=L&vid=${vid}&search_scope=${scope}&tab=default_tab&lang=no_NO`;
     }
 
+    isbn() {
+        return get(this.data, 'isbns.0');
+    }
+
     title() {
         return this.data.title;  //.replace(/[/;,. ]+$/g, '');
     }

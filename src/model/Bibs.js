@@ -38,7 +38,7 @@ export default class Bibs {
           id: bib.data.id,
           name: bib.title(),
           edition: bib.edition(),
-          link: `https://${process.env.VUE_APP_PRIMO_HOST}/primo-explore/search?query=any,contains,${bib.data.isbns[0]}&vid=${process.env.VUE_APP_PRIMO_VIEW}`,
+          link: `https://${process.env.VUE_APP_PRIMO_HOST}/primo-explore/search?query=any,contains,${bib.isbn()}&vid=${process.env.VUE_APP_PRIMO_VIEW}`,
 
           children: bib.data.holdings
             .filter(h => h.institution == process.env.VUE_APP_ALMA_INST)
