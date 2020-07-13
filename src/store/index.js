@@ -23,7 +23,7 @@ const store = new Vuex.Store({
         return apiCall({
           url: '/alma/search',
           params: {
-            query: `alma.${field} ${op} %22${query}%22`,
+            query: `alma.${field} ${op} "${query}"`,
             limit: 50,
             expand_items: 'true',
           }
@@ -36,7 +36,7 @@ const store = new Vuex.Store({
             return apiCall({
               url: '/alma/search',
               params: {
-                query: `alma.${field} ${op} %22${query}%22`,
+                query: `alma.${field} ${op} "${query}"`,
                 limit: 50,
                 nz: 'true',
               }
