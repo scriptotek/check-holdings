@@ -1,42 +1,49 @@
 <template>
     <div>
-        <v-layout row align-center>
-            <v-flex shrink>
+
+        <p>
+            Verktøyet lar deg raskt sjekke beholdningen i Alma ({{ ALMA_INST }}) for en liste med bøker.
+        </p>
+
+        <v-row align="center">
+            <v-col cols="12" sm="4">
                 <v-select
+                  label="Search by"
                   :items="fields"
                   v-model="field"
-                  solo
+                  outlined
+                  hide-details
                 ></v-select>
-            </v-flex>
-        </v-layout>
-        <p lang="nb" v-show="field == 'isbn'">
-            Legg inn en liste med ISBN-numre (én per linje) og sjekk raskt beholdningen vår.
-            Selv om et bestemt ISBN-nummer ikke gir treff kan det fortsatt være
-            vi har en annen variasjon eller utgave av boka.
-        </p>
-        <p lang="nb" v-show="field == 'title'">
-            Legg inn en liste med titler (én per linje) og sjekk raskt beholdningen vår.
-        </p>
+            </v-col>
+            <v-col class="text-body-2">
+                <span v-show="field == 'isbn'">
+                    Legg inn ett ISBN-nummer per linje i tekstfeltet under, med eller uten bindestreker.
+                    OBS: Selv om et bestemt ISBN-nummer ikke gir treff, kan det fortsatt være
+                    vi har en annen utgave av boka.
+                </span>
+                <span v-show="field == 'title'">
+                    Legg inn en boktittel per linje i tekstfeltet under.
+                </span>
+                <span v-show="field == 'all_for_ui'">
+                    Legg inn nøkkelord som forfatter, tittel osv. Én linje per bok i tekstfeltet under.
+                </span>
+            </v-col>
+        </v-row>
 
         <form @submit.prevent="submit">
-
             <v-textarea
                 label="Values to check:"
-                hint="One item per line. With or without hyphens."
                 v-model="inputText"
-                solo
-              ></v-textarea>
-
+                outlined
+                hide-details
+            ></v-textarea>
             <v-btn
                 @click="submit"
-                class="white--text"
+                class="my-2"
                 color="primary"
                 depressed
                 :disabled="inputText.length < 3"
               >Check</v-btn>
-
-             (Alma instance: {{ ALMA_INST }})
-
         </form>
 
         <results :searches="searches"></results>
@@ -90,7 +97,11 @@ export default {
     },
     methods: {
         submit () {
-            let values = this.inputText.replace(/,/g, ' ').split('\n').filter(x => x.length)
+            let values = this.inputText
+                .replace(/,/g, ' ')
+                .split('\n')
+                .map(x => x.trim())
+                .filter(x => x.length)
             this.$router.push({path: '/', query: {q: this.field + ':' + values.join(',')}})
         },
         checkQueryString: function() {

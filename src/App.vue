@@ -1,31 +1,42 @@
 <template>
   <v-app>
-      <!--
-    <v-toolbar app>
-      <v-toolbar-title v-text="'Oria-testing'"></v-toolbar-title>
-    </v-toolbar>-->
-    <v-content>
-        <v-container>
-          <h2><router-link to="/" class="bare-link">
-            <v-icon>search</v-icon>
-            Check holdings tool</router-link></h2>
-          <router-view/>
-        </v-container>
-    </v-content>
-    <v-footer>
-        <v-layout
-          justify-center
-          row
-          wrap
-        >
-            <p>
-                Data fra Alma via
-                <a :href="lsm_url">LSM</a>.
-                Ansvarlig: <a href="mailto:d.m.heggo@ub.uio.no">Dan Michael</a>.
-                Kildekode: <a href="https://github.com/scriptotek/check-holdings">på GitHub</a>.
-            </p>
-        </v-layout>
+
+    <v-app-bar
+      app
+      color="teal"
+      dense
+      dark
+      flat
+    >
+      <v-container>
+        <v-toolbar-title>
+          <v-icon>mdi-magnify</v-icon>
+          Check holdings tool
+        </v-toolbar-title>
+      </v-container>
+    </v-app-bar>
+
+    <v-main>
+      <v-container>
+        <router-view/>
+      </v-container>
+    </v-main>
+
+    <v-footer app>
+      <v-layout
+        justify-center
+        row
+        wrap
+      >
+          <p>
+              Data fra Alma via
+              <a :href="lsm_url">LSM</a>.
+              Ansvarlig: <a href="mailto:d.m.heggo@ub.uio.no">Dan Michael</a>.
+              Kildekode: <a href="https://github.com/scriptotek/check-holdings">på GitHub</a>.
+          </p>
+      </v-layout>
     </v-footer>
+
   </v-app>
 </template>
 
@@ -43,22 +54,8 @@ export default {
 </script>
 
 <style lang="sass">
-i.material-icons
-    color: inherit !important
+body
+    background: #eee
 footer
     font-size: 85%
-a
-    text-decoration: none
-h2
-    margin-bottom: .5em
-
-.bare-link, .bare-link:visited
-    text-decoration: none
-
-
-.v-content__wrap, .v-footer
-    p
-        margin: 0
-.v-btn
-    margin: .8em 0
 </style>

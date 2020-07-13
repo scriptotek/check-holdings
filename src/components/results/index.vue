@@ -6,12 +6,11 @@
         <div v-if="!loading && !searches.length">
             No searches, click the header to go back.
         </div>
-        <v-container fluid :key="search.query" v-for="search in searches" class="pa-0 pt-1 ch-row">
-            <v-layout row wrap>
-                <v-flex sm2>
+            <v-row no-gutters class="ch-row" :key="search.query" v-for="search in searches">
+                <v-col :sm="2">
                     <strong>{{ search.query }}</strong>
-                </v-flex>
-                <v-flex sm10>
+                </v-col>
+                <v-col :sm="10">
                     <div v-if="search.loading">
                         Waiting...
                     </div>
@@ -24,27 +23,33 @@
                         </div>
                         <v-treeview
                             v-else
+                            dense
                             :items="search.results.treedata()"
                             :open="search.results.open_nodes()"
                             :open-on-click="true"
                             item-key="id">
                                 <template slot="label" slot-scope="{ item }">
-                                    <v-icon small v-if="item.available === false">report</v-icon>
+                                    <v-icon small v-if="item.available === false">mdi-alert</v-icon>
                                     {{ item.name }} {{ item.edition || '' }}
                                     <span v-if="item.summary" class="summary">({{item.summary}})</span>
 
-                                    <router-link v-if="item.available === false" target="_blank" :to="{name: 'Home', query: {q:'title:' + encodeURIComponent(item.parent_name.replace(/,/g, ' ').replace(/  /g, ' ')) }}">Try title search<i class="v-icon markdown--link mdi mdi-open-in-new"></i></router-link>
+                                    <router-link v-if="item.available === false" :to="getTitleSearchLink(item)" class="mx-2">Try title search</router-link>
 
-                                    <a v-if="item.link" :href="item.link" target="_blank" class="markdown--link markdown--external">Oria<i class="v-icon markdown--link mdi mdi-open-in-new"></i></a>
+                                    <v-btn v-if="item.link" text small color="teal" :href="item.link" target="_blank" class="mx-1">
+                                        Oria
+                                        <v-icon small>mdi-open-in-new</v-icon>
+                                    </v-btn>
 
-                                    <a v-if="item.ebooklink" :href="item.ebooklink" target="_blank" class="markdown--link markdown--external">Fulltext<i class="v-icon markdown--link mdi mdi-open-in-new"></i></a>
+                                    <v-btn v-if="item.ebooklink" text small color="teal" :href="item.ebooklink" target="_blank" class="mx-1">
+                                        Fulltext
+                                        <v-icon small>mdi-open-in-new</v-icon>
+                                    </v-btn>
 
                                 </template>
                         </v-treeview>
                     </div>
-                </v-flex>
-            </v-layout>
-        </v-container>
+                </v-col>
+            </v-row>
 
         <p v-if="searches.length" style="margin-top:2em;">
             Note: The number of bibliographic records retrieved for <em>each</em> search
@@ -57,6 +62,11 @@
     border-bottom: 0.5px solid #009688
 .summary
     color: #008
+
+
+.v-treeview--dense .v-treeview-node__root
+    min-height: 30px
+
 .v-treeview-node__root
     height: auto
 .v-treeview-node__label
@@ -73,12 +83,6 @@ i + .v-treeview-node__content:hover
 .v-treeview-node__content
     flex-shrink: 1
 
-*
-    -webkit-user-select: auto !important  /* Chrome 49+ */
-    -moz-user-select: auto !important     /* Firefox 43+ */
-    -ms-user-select: auto !important      /* No support yet */
-    user-select: auto !important          /* Likely future */
-
 </style>
 <script>
 import { mapState } from 'vuex';
@@ -92,6 +96,20 @@ export default {
         ...mapState({
             loading: state => state.loading,
         }),
+    },
+    methods: {
+        getTitleSearchLink(item) {
+            if (!item.parent_name) {
+                return {}
+            }
+            const title = item.parent_name.replace(/,/g, ' ').replace(/ {2}/g, ' ')
+            return {
+                name: 'Home',
+                query: {
+                    q: 'title:' + encodeURIComponent(title)
+                }
+            }
+        },
     },
 }
 </script>
