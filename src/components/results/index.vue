@@ -113,7 +113,7 @@ export default {
             return {
                 name: 'Home',
                 query: {
-                    q: 'title:' + encodeURIComponent(title)
+                    q: 'title:' + title
                 }
             }
         },
