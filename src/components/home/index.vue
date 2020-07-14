@@ -47,7 +47,7 @@
             <v-btn
                 @click="clear"
                 class="my-2 ml-2"
-                color="secondary"
+                color="brown lighten-3"
                 depressed
                 :disabled="inputText.length == 0"
               >Clear</v-btn>
