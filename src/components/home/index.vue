@@ -44,6 +44,13 @@
                 depressed
                 :disabled="inputText.length < 3"
               >Check</v-btn>
+            <v-btn
+                @click="clear"
+                class="my-2 ml-2"
+                color="secondary"
+                depressed
+                :disabled="inputText.length == 0"
+              >Clear</v-btn>
         </form>
 
         <results :searches="searches"></results>
@@ -96,6 +103,11 @@ export default {
         this.checkQueryString();
     },
     methods: {
+        clear () {
+            this.field = 'isbn'
+            this.inputText = ''
+            this.$router.push({path: '/', query: {}})
+        },
         submit () {
             let values = this.inputText
                 .replace(/,/g, ' ')
