@@ -27,9 +27,10 @@
                         <v-treeview
                             v-else
                             dense
+                            hoverable
+                            :activatable="true"
                             :items="search.results.treedata()"
                             :open="search.results.open_nodes()"
-                            :open-on-click="true"
                             item-key="id">
                                 <template slot="label" slot-scope="{ item }">
                                     <v-icon small v-if="item.available === false">mdi-alert</v-icon>
