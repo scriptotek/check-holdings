@@ -127,7 +127,9 @@ export default {
                     return x
                 })
                 .filter(x => x.length)
-            this.$router.push({path: '/', query: {q: this.field + ':' + values.join(',')}})
+            if (values.length) {
+                this.$router.push({path: '/', query: {q: this.field + ':' + values.join(',')}})
+            }
         },
         checkQueryString: function() {
             if (this.queryString && this.queryString.q) {
