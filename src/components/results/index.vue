@@ -20,6 +20,9 @@
                     <div v-if="!search.loading && !search.error">
                         <div v-if="!search.results.data.length">
                             <em>Not found, please check manually</em>
+                            <span v-if="field === 'isbn'">, or try
+                                <a href='#' @click.prevent="keywordSearch()" class="mx-2">keyword search</a>
+                            </span>
                         </div>
                         <v-treeview
                             v-else
@@ -90,6 +93,7 @@ import { mapState } from 'vuex';
 export default {
     name: 'results',
     props: [
+        'field',
         'searches',
     ],
     computed: {
@@ -98,6 +102,9 @@ export default {
         }),
     },
     methods: {
+        keywordSearch() {
+            this.$emit('changeField', 'all_for_ui')
+        },
         getTitleSearchLink(item) {
             if (!item.parent_name) {
                 return {}

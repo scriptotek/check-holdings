@@ -53,7 +53,7 @@
               >Clear</v-btn>
         </form>
 
-        <results :searches="searches"></results>
+        <results :field="field" :searches="searches" @changeField="changeField($event)"></results>
     </div>
 </template>
 
@@ -103,6 +103,11 @@ export default {
         this.checkQueryString();
     },
     methods: {
+        changeField (newField) {
+            console.log('CHANGE', newField)
+            this.field = newField
+            this.submit()
+        },
         clear () {
             this.field = 'isbn'
             this.inputText = ''
