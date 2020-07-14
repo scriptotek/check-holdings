@@ -118,6 +118,14 @@ export default {
                 .replace(/,/g, ' ')
                 .split('\n')
                 .map(x => x.trim())
+                .map(x => {
+                    if (this.field == 'isbn') {
+                        return x
+                            .replace(/ISBN-(10|13)/gi, '')
+                            .replace(/[^0-9Xx]/g, '')
+                    }
+                    return x
+                })
                 .filter(x => x.length)
             this.$router.push({path: '/', query: {q: this.field + ':' + values.join(',')}})
         },
