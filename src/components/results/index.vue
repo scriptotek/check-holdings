@@ -4,10 +4,9 @@
             <v-progress-linear :indeterminate="true" v-show="loading" class="ma-0"></v-progress-linear>
         </div>
         <div v-if="!loading && !searches.length">
-            No searches, click the header to go back.
         </div>
             <v-row no-gutters class="ch-row" :key="search.query" v-for="search in searches">
-                <v-col :sm="2">
+                <v-col :sm="2" class="pr-2">
                     <strong>{{ search.query }}</strong>
                 </v-col>
                 <v-col :sm="10">
