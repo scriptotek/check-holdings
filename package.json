@@ -16,7 +16,7 @@
     "core-js": "^3.6.5",
     "faker": "^4.1.0",
     "localforage": "^1.7.3",
-    "node-sass": "^4.9.3",
+    "node-sass": "^7.0.0",
     "proxy-middleware": "^0.15.0",
     "querystring": "^0.2.0",
     "vue": "^2.5.17",
